@@ -1,0 +1,11 @@
+---
+
+-   name: Install Docker
+    yum:
+      name: docker
+      state: latest
+
+-   name: Make sure Docker is running
+    service:
+      name: docker
+      state: running
