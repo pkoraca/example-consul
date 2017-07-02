@@ -1,3 +1,5 @@
 ---
 
 - include: docker.yml
+
+- include: myapp.yml

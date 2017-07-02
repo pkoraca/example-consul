@@ -1,0 +1,43 @@
+from flask import Flask
+import consul
+import json
+import MySQLdb
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    num = connect_to_db()
+    print num
+    return "Hello World! {0}".format(num)
+
+def discover_mysql():
+    c = consul.Consul(host='127.0.0.1')
+
+    index, data = c.catalog.service('mysql')
+
+    data = json.dumps(data)
+    parsed_json = json.loads(data)
+    mysql_ip = parsed_json[0]['Address']
+
+    return mysql_ip
+
+def connect_to_db():
+    mysql_ip = discover_mysql()
+    db = MySQLdb.connect(host=mysql_ip, user="root", passwd="my-secret-pw", db="mysql")
+
+    cur = db.cursor()
+
+    cur.execute("SELECT COUNT(*) FROM user;")
+
+    # print all the first cell of all the rows
+    for row in cur.fetchall():
+      num = row[0]
+
+    # SELECT COUNT(*) FROM user;
+    db.close()
+
+    return num
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8080, debug=True)
