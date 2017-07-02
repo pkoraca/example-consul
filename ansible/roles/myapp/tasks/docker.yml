@@ -4,6 +4,14 @@
     yum:
       name: python-setuptools
 
+- name: Install python devel
+  yum:
+    name: python-devel
+
+- name: Install mysql devel
+  yum:
+    name: mysql-devel
+
 -   name: Install Pypi
     easy_install:
       name: pip
@@ -12,6 +20,18 @@
     pip:
       name: docker-py
       version: 1.9.0
+
+- name: Install MySQL-python
+  pip:
+    name: MySQL-python
+
+- name: Install Flask
+  pip:
+    name: Flask
+
+- name: Install python-consul
+  pip:
+    name: python-consul
 
 -   name: Install Docker
     yum:
@@ -35,6 +55,7 @@
   docker_container:
     name: myconsul
     image: consul
+    network_mode: host
 
 - name: Create a MySQL container
   docker_container:
@@ -44,3 +65,12 @@
       - "127.0.0.1:3306:3306"
     env:
        MYSQL_ROOT_PASSWORD: my-secret-pw
+
+- name: Create a Registrator container
+  docker_container:
+    name: registrator
+    image: gliderlabs/registrator
+    network_mode: host
+    command: consul://localhost:8500
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
