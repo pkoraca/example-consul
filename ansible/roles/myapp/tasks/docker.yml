@@ -1,8 +1,8 @@
 ---
 
--   name: Install python setup tools
-    yum:
-      name: python-setuptools
+- name: Install python setup tools
+  yum:
+    name: python-setuptools
 
 - name: Install python devel
   yum:
@@ -12,36 +12,24 @@
   yum:
     name: mysql-devel
 
--   name: Install Pypi
-    easy_install:
-      name: pip
+- name: Install Pypi
+  easy_install:
+    name: pip
 
--   name: Install docker-py
-    pip:
-      name: docker-py
-      version: 1.9.0
-
-- name: Install MySQL-python
+- name: Install docker-py
   pip:
-    name: MySQL-python
+    name: docker-py
+    version: 1.9.0
 
-- name: Install Flask
-  pip:
-    name: Flask
+- name: Install Docker
+  yum:
+    name: docker
+    state: latest
 
-- name: Install python-consul
-  pip:
-    name: python-consul
-
--   name: Install Docker
-    yum:
-      name: docker
-      state: latest
-
--   name: Make sure Docker is running
-    service:
-      name: docker
-      state: running
+- name: Make sure Docker is running
+  service:
+    name: docker
+    state: running
 
 - name: Pull Consul image
   docker_image:
