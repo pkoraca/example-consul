@@ -1,0 +1,25 @@
+---
+
+- name: Create a Consul container
+  docker_container:
+    name: myconsul
+    image: docker.io/consul
+    network_mode: host
+
+- name: Create a MySQL container
+  docker_container:
+    name: mydb
+    image: docker.io/mysql
+    ports:
+      - "127.0.0.1:3306:3306"
+    env:
+       MYSQL_ROOT_PASSWORD: my-secret-pw
+
+- name: Create a Registrator container
+  docker_container:
+    name: registrator
+    image: gliderlabs/registrator
+    network_mode: host
+    command: consul://localhost:8500
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock

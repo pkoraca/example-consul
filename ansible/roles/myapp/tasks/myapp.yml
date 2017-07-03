@@ -24,7 +24,7 @@
     name: myapp
     tag: latest
 
-- name: Create Myapp container
+- name: Run Myapp
   docker_container:
     name: myapp
     image: myapp

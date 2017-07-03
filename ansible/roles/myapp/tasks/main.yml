@@ -1,5 +1,7 @@
 ---
 
-- include: docker.yml
+- include: prerequisites.yml
+
+- include: 3rd_party_containers.yml
 
 - include: myapp.yml
